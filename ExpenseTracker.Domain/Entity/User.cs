@@ -1,4 +1,6 @@
-﻿namespace ExpenseTracker.Domain.Entity;
+﻿using System.Text.Json.Serialization;
+
+namespace ExpenseTracker.Domain.Entity;
 
 public class User
 {
@@ -7,5 +9,6 @@ public class User
     public string Email { get; set; }
     public string Password { get; set; }
 
+    [JsonIgnore]
     public ICollection<Expense> Expenses { get; set; } = new List<Expense>();
 }
