@@ -1,9 +1,0 @@
-﻿.idea/
-.vs/
-*.user
-*.userosscache
-*.sln.doccache
-[Bb]in/
-[Oo]bj/
-.DS_Store
-Thumbs.db
