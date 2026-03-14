@@ -9,10 +9,17 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.9"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.0">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="9.*" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Controllers\" />
+      <ProjectReference Include="..\ExpenseTracker.Application\ExpenseTracker.Application.csproj" />
+      <ProjectReference Include="..\ExpenseTracker.Domain\ExpenseTracker.Domain.csproj" />
+      <ProjectReference Include="..\ExpenseTracker.Infrastructure\ExpenseTracker.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>
