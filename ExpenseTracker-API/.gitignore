@@ -1,8 +1,9 @@
-﻿[Bb]in/
-[Oo]bj/
+﻿.idea/
 .vs/
-.idea/
 *.user
-*.suo
 *.userosscache
-*.sln.docstates
+*.sln.doccache
+[Bb]in/
+[Oo]bj/
+.DS_Store
+Thumbs.db
