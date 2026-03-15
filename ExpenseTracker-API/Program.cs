@@ -1,4 +1,5 @@
 using ExpenseTracker.Application.Interfaces;
+using ExpenseTracker.Application.Mappings;
 using ExpenseTracker.Application.Services;
 using ExpenseTracker.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -18,10 +19,11 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment()  )
 {
     app.UseSwagger();
     app.UseSwaggerUI();
