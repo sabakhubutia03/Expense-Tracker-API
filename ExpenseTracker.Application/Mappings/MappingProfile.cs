@@ -16,5 +16,9 @@ public class MappingProfile : Profile
         CreateMap<UpdateExpenseDto, Expense>();
         CreateMap<Expense, ExpenseDto>();
         
+        CreateMap<CategoryDto , Category>();
+        CreateMap<CreateCategoryDto ,  Category>();
+        CreateMap<Category, CategoryDto>();
+        
     }
 }

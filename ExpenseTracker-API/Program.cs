@@ -1,3 +1,4 @@
+using ExpenseTracker_API.MiddleWare;
 using ExpenseTracker.Application.Interfaces;
 using ExpenseTracker.Application.Mappings;
 using ExpenseTracker.Application.Services;
@@ -22,6 +23,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddAutoMapper(typeof(MappingProfile));
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IExpenseService, ExpenseService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment()  )
@@ -29,7 +31,7 @@ if (app.Environment.IsDevelopment()  )
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseMiddleware<GlobalExceptionMiddleware>();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

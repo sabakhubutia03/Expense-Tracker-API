@@ -6,5 +6,5 @@ public class CreateExpenseDto
     public double Amount { get; set; }
     public DateTime Date { get; set; }
     public int UserId { get; set; }
-    public string CategoryId { get; set; }
+    public int CategoryId { get; set; }
 }

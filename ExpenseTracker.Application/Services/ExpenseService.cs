@@ -2,6 +2,7 @@
 using ExpenseTracker.Application.DTOs;
 using ExpenseTracker.Application.Interfaces;
 using ExpenseTracker.Domain.Entity;
+using ExpenseTracker.Domain.Exceptions;
 using ExpenseTracker.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -32,13 +33,25 @@ public class ExpenseService : IExpenseService
         if (string.IsNullOrWhiteSpace(dto.Title))
         {
             _logger.LogError(" Is null expense name");
-            throw new ArgumentException("Is null expense name");
+            throw new ApiException(
+                "Is null expense name",
+                "BadRequest",
+                400,
+                "ExpenseService.CreateExpense: Title is null",
+                "/api/Expenses/CreateExpense"
+                );
         }
 
         if (dto.Amount <= 0)
         {
             _logger.LogError(" Is not a valid expense amount");
-            throw new ArgumentException("Is not a valid expense amount");
+            throw new ApiException(
+                "Is not a valid expense amount",
+                "BadRequest",
+                400,
+                "ExpenseService.CreateExpense: Amount is negative",
+                "/api/Expenses/CreateExpense"
+            );
         }
 
         var expense = _mapper.Map<Expense>(dto);
@@ -55,7 +68,13 @@ public class ExpenseService : IExpenseService
         if (updateExpense == null)
         {
             _logger.LogError(" Is not found expense id -{id}", id);
-            throw new ArgumentException("Is not found expense");
+            throw new ApiException(
+                $"Is not found expense id - {id}",
+                "NotFound",
+                404,
+                "ExpenseService.UpdateExpense: Expense not found",
+                "/api/Expenses/UpdateExpense"
+            );
         }
         
         if(!string.IsNullOrWhiteSpace(dto.Title))

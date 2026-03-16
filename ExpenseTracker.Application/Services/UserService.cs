@@ -2,6 +2,7 @@
 using ExpenseTracker.Application.DTOs;
 using ExpenseTracker.Application.Interfaces;
 using ExpenseTracker.Domain.Entity;
+using ExpenseTracker.Domain.Exceptions;
 using ExpenseTracker.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -30,14 +31,41 @@ public class UserService :IUserService
     public async Task<UserDto> CreateUser(UserCreateDto dto)
     {
         if (string.IsNullOrWhiteSpace(dto.Email))
-            throw new ArgumentException("Email is empty");
+        {
+            _logger.LogError("Email is required");
+            throw new ApiException(
+                "Email is required",
+                "BadRequest",
+                400,
+                "Email is required",
+                "/api/Users/CreateUser"
+                );
+        }
 
         if (string.IsNullOrWhiteSpace(dto.Password))
-            throw new ArgumentException("Password is empty");
+        {
+            _logger.LogError("Password is required");
+            throw new ApiException(
+                "Password is required",
+                "BadRequest",
+                400,
+                "Password is required",
+                "/api/Users/CreateUser"
+            );
+        }
 
         var existingUser = await _context.Users.FirstOrDefaultAsync(e => e.Email == dto.Email);
         if (existingUser != null)
-            throw new Exception("Email already exists");
+        {
+            _logger.LogError("Email is already registered");
+            throw new ApiException(
+                "Email is already registered",
+                "Conflict",
+                409,
+                "Email is already registered",
+                "/api/Users/CreateUser"
+            );
+        }
         
         var user = _mapper.Map<User>(dto);
         
@@ -52,7 +80,13 @@ public class UserService :IUserService
         if (userUpdate == null)
         {
             _logger.LogError("User not found id - {id}", id);
-            throw new KeyNotFoundException("User not found");
+            throw new ApiException(
+                $"User not found id - {id}",
+                "NotFound",
+                404,
+                "User not found",
+                "/api/Users/UpdateUser"
+            );
         }
        if(!string.IsNullOrWhiteSpace(dto.Name)) 
            userUpdate.Name = dto.Name;
@@ -87,7 +121,13 @@ public class UserService :IUserService
         if (getUserById == null)
         {
             _logger.LogWarning("User not found id - {id}", id);
-            throw new KeyNotFoundException("User not found");
+            throw new ApiException(
+                $"User not found id - {id}",
+                "NotFound",
+                404,
+                "User not found",
+                "/api/Users/GetUserById"
+            );
         }
         return _mapper.Map<UserDto>(getUserById);
     }
